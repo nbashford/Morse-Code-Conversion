@@ -27,11 +27,12 @@ def string_to_morse(string_input: str):
     # Create list of words
     string_words = string_input.upper().split(' ')
     # Nested list of morse code symbols for each letter in each word
-    morse_code_w = [[morse_code[letter] for letter in word] for word in string_words]
+    morse_code_words = [[morse_code[letter] for letter in word] for word in string_words]
     # Join letter/digit symbols in word by 1 space, and words by 3 spaces
-    morse_code_string = '   '.join([' '.join(word) for word in morse_code_w])
+    morse_code_string = '   '.join([' '.join(word) for word in morse_code_words])
 
-    print(morse_code_string)
+    return morse_code_string
+
 
 def morse_to_string(morse_input: str):
 
@@ -64,26 +65,30 @@ def morse_to_string(morse_input: str):
     # Join letters of each word, then join words and capitalise first word
     string_words = ' '.join([''.join(word) for word in string_words]).capitalize()
 
-    print(string_words)
+    return string_words
 
 
 print("Welcome to the Morse Code conversion application.\n")
 
 play = True
 while play:
+    # Instructions
     response = input("Please enter either a word/sentence(s), or"
                      " morse code: \n")
 
+    # if input is valid morse code
     if set(response) <= {'.', '-', ' '}:
-        print("Your Morse Code Translates to: ")
-        string_word = morse_to_string(response)
+        # print the readable string
+        print(f"Your Morse Code Translates to:\n"
+              f"{morse_to_string(response)}")
+    # if input is not morse code
     else:
-        try:
-            print("Your input translates to: ")
-            morse_code_string = string_to_morse(response)
-        except KeyError:
+        try: # convert input into morse code
+            print(f"Your input in morse code is:\n"
+                  f"{string_to_morse(response)}")
+        except KeyError: # an input not within morse code dictionary keys
             print("Your input is either outside the range of expected characters" 
-                  "for morse code, or your morse code includes an incorrect character"
+                  " for morse code, or your morse code includes an incorrect character"
                   " \n please try again")
 
     continue_play = input("Continue (Y or N) ?\n").lower()
@@ -91,11 +96,3 @@ while play:
         continue
     elif continue_play == 'n':
         play = False
-
-
-
-morse_code_string = string_to_morse("Hello World")
-print(morse_code_string)
-
-string_word = morse_to_string(morse_code_string)
-print(string_word)
